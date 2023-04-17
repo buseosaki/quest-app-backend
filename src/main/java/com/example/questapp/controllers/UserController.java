@@ -1,7 +1,9 @@
 package com.example.questapp.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +47,28 @@ public class UserController {
 	//ID creationunu yapamayız kendimiz vermek siteriz o yuzden postmapping yapamayız.
 	//Onun yerine varolan idli bir useri değiştirebiliriz.
 	
-		
+	@PutMapping("/{userId}")
+	public User updateOneUser(@PathVariable Long userId, @RequestBody User newUser) {
+	//update etmek için önce o user'ı bulmalıyız.
+		Optional<User> user = userRepository.findById(userId);
+		if(user.isPresent()) {
+			User foundUser = user.get(); //optional oldugu icin olusturulan useri get ile alıyoruz
+			//sonra foundUser üzerinde update işlemi yapılacak.
+			foundUser.setUserName(newUser.getUserName()); //parametreye requestbody newUser ekledik
+			foundUser.setPassword(newUser.getPassword());
+			
+			//update edilen halini database'e save edelim
+			userRepository.save(foundUser);
+			return foundUser;
+			
+		}else
+			return null;
+	}
+	
+	@DeleteMapping("/{userId}")
+	public void deleteOneUser(@PathVariable Long userId) {
+		userRepository.deleteById(userId);
+	}
+	
 	}
 
