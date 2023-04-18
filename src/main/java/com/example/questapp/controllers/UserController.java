@@ -14,23 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.questapp.entities.User;
 import com.example.questapp.repos.UserRepository;
+import com.example.questapp.services.UserService;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
 	//önce repoyu tanimla
-	private UserRepository userRepository; //esittirli bir sey yazmadık.
+	private UserService userService; //esittirli bir sey yazmadık.
 	// spring userRepositorynin beanini bulup inject edecek. bunu constructor injectle apabiliriz.
 	
 	public UserController(UserRepository userRepository) {
-		this.userRepository = userRepository;
+		this.userService = userService;
 	}
 	
 	
 	@GetMapping //getirmek için
 	public List<User> getAllUsers() {
-		return userRepository.findAll();
+		return userService.getAllUsers();
+		//getAllUsers'i userservice kısmında tanımlıyoruz
 	}
 	
 	@PostMapping //create etmek için - post isteği geldiğinde bu method çağırılır

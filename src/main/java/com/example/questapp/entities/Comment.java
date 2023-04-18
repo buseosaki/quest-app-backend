@@ -24,10 +24,14 @@ public class Comment {
 	
 	@Id
 	Long id;
-	Long postId; //burayı da sekillendir
+	@ManyToOne(fetch = FetchType.LAZY)  //bir sürü postun tek bir userı olabilir 
+	@JoinColumn(name="post_id", nullable=false) //post id'yi comment'a bağladık
+	@OnDelete(action = OnDeleteAction.CASCADE) //bir post silindiğinde commentları da silinsin
+	@JsonIgnore
+	Post post;
 	
 	@ManyToOne(fetch = FetchType.LAZY)  //bir sürü postun tek bir userı olabilir 
-	@JoinColumn(name="user_id", nullable=false) //user id'yi post'a bağladık
+	@JoinColumn(name="user_id", nullable=false) //user id'yi comment'a bağladık
 	@OnDelete(action = OnDeleteAction.CASCADE) //bir user silindiğinde postları da silinsin
 	@JsonIgnore
 	User user;
