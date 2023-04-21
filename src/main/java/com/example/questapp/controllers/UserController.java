@@ -24,7 +24,7 @@ public class UserController {
 	private UserService userService; //esittirli bir sey yazmadık.
 	// spring userRepositorynin beanini bulup inject edecek. bunu constructor injectle apabiliriz.
 	
-	public UserController(UserRepository userRepository) {
+	public UserController(UserService userService) {
 		this.userService = userService;
 	}
 	
@@ -37,13 +37,13 @@ public class UserController {
 	
 	@PostMapping //create etmek için - post isteği geldiğinde bu method çağırılır
 	public User createUser(@RequestBody User newUser) {
-		return userRepository.save(newUser);
+		return userService.saveOneUser(newUser);
 	}
 	
 	@GetMapping("/{userId}")
 	public User getOneUser(@PathVariable Long userId) {
 		//custom exception
-		return userRepository.findById(userId).orElse(null);
+		return userService.getOneUser(userId);
 	}
 	
 	//ID creationunu yapamayız kendimiz vermek siteriz o yuzden postmapping yapamayız.
@@ -51,25 +51,12 @@ public class UserController {
 	
 	@PutMapping("/{userId}")
 	public User updateOneUser(@PathVariable Long userId, @RequestBody User newUser) {
-	//update etmek için önce o user'ı bulmalıyız.
-		Optional<User> user = userRepository.findById(userId);
-		if(user.isPresent()) {
-			User foundUser = user.get(); //optional oldugu icin olusturulan useri get ile alıyoruz
-			//sonra foundUser üzerinde update işlemi yapılacak.
-			foundUser.setUserName(newUser.getUserName()); //parametreye requestbody newUser ekledik
-			foundUser.setPassword(newUser.getPassword());
-			
-			//update edilen halini database'e save edelim
-			userRepository.save(foundUser);
-			return foundUser;
-			
-		}else
-			return null;
+		return userService.updateOneUser(userId,newUser);
 	}
 	
 	@DeleteMapping("/{userId}")
 	public void deleteOneUser(@PathVariable Long userId) {
-		userRepository.deleteById(userId);
+		userService.deleteById(userId);
 	}
 	
 	}
