@@ -18,10 +18,23 @@ public class PostService {
 	public PostService(PostRepository postRepository) {
 		this.postRepository = postRepository;
 	}
-	
-	@GetMapping
-	public List<Post> getAllPosts(@RequestParam Optional <Long> userId){
-		return postService.getAllPosts(userId);
-		
+
+	public List<Post> getAllPosts(Optional<Long> userId) {
+		if(userId.isPresent())
+			return postRepository.findByUserId(userId.get());
+		return postRepository.findAll();
 	}
+
+	public Post getOnePostById(Long postId) {
+		
+		return postRepository.findById(postId).orElse(null);
+	}
+
+	public Post createOnePost(Post newPost) {
+		return postRepository.save(newPost);
+	}
+	
+	
+		
+	
 	}
