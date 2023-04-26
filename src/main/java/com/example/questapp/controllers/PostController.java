@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.questapp.entities.Post;
+import com.example.questapp.requests.PostCreateRequest;
 import com.example.questapp.services.PostService;
 
 @RestController
@@ -33,9 +35,9 @@ public class PostController {
 		return postService.getAllPosts(userId);
 	}
 	
-	@PutMapping
-	public Post createOnePost(@RequestBody Post newPost) {
-		return postService.createOnePost(newPost);
+	@PostMapping
+	public Post createOnePost(@RequestBody PostCreateRequest newPostRequest) {
+		return postService.createOnePost(newPostRequest);
 	}
 	
 	

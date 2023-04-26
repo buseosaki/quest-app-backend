@@ -29,6 +29,7 @@ public class Post {
 	@OnDelete(action = OnDeleteAction.CASCADE) //bir user silindiğinde postları da silinsin
 	@JsonIgnore
 	User user;
+	//direkt user olmasına gerek yok. bunun için requests açacağız
 	
 	String title;
 	@Lob

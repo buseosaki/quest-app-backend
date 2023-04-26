@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.questapp.entities.Post;
 import com.example.questapp.repos.PostRepository;
+import com.example.questapp.requests.PostCreateRequest;
 
 @Service
 public class PostService {
@@ -30,8 +31,8 @@ public class PostService {
 		return postRepository.findById(postId).orElse(null);
 	}
 
-	public Post createOnePost(Post newPost) {
-		return postRepository.save(newPost);
+	public Post createOnePost(PostCreateRequest newPostRequest) {
+		return null;
 	}
 	
 	
