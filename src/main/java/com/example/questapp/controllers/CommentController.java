@@ -3,14 +3,19 @@ package com.example.questapp.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.questapp.entities.Comment;
+import com.example.questapp.requests.CommentCreateRequest;
+import com.example.questapp.requests.CommentUpdateRequest;
 import com.example.questapp.services.CommentService;
 
 @RestController
@@ -24,14 +29,36 @@ public class CommentController {
 		this.commentService = commentService;
 	}
 	
+	//userid veya postid girip commentleri listele
 	@GetMapping
-	public List<Comment> getAllComments(@RequestParam Optional <Long> userId){
-		return commentService.getAllComments(userId);
+	public List<Comment> getAllComments(@RequestParam Optional <Long> userId, 
+			@RequestParam Optional <Long> postId){
+		return commentService.getAllCommentsWithParam(userId, postId);
 		
 	}
 	
 	@PostMapping
 	public Comment createOneComment(@RequestBody CommentCreateRequest newCreateRequest) {
-		return commentService.createOneComment();
+		return commentService.createOneComment(newCreateRequest);
 	}
+	
+	//spesifik commentidye ait commenti getir
+	@GetMapping("/commentId")
+	public Comment getOneComment(@PathVariable Long commentId){
+		return commentService.getOneCommentById(commentId);
+		
+	}
+	
+	@PutMapping("/{commentId}")
+	public Comment updateOneComment(@PathVariable long commentId, @RequestBody CommentUpdateRequest request) {
+		return commentService.updateOneCommentById(commentId, request);
+	}
+	
+	@DeleteMapping("/{commentId")
+	public void deleteOneComment(@PathVariable Long commentId) {
+		
+	    commentService.deleteOneCommentById(commentId);
+	
+	} 
+	
 }
